@@ -17,6 +17,7 @@ import org.umn.week07demo.data.repository.NoteRepositoryImpl
 import org.umn.week07demo.model.Note
 
 class NotesViewModel(application: Application) : AndroidViewModel(application) {
+    constructor(application: NoteRepository) : this(application)
 
     // Masih membuat dependency sendiri (belum DI), tapi logika hanya bicara ke interface
     private val repository: NoteRepository =

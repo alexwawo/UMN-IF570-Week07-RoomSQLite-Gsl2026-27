@@ -1,6 +1,7 @@
 package org.umn.week07demo.ui
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -32,7 +33,8 @@ fun NotesScreen(viewModel: NotesViewModel = hiltViewModel()) {
     NotesContent(
         notes = notes,
         onAdd = viewModel::addNote,
-        onDelete = viewModel::deleteNote
+        onDelete = viewModel::deleteNote,
+        onTogglePin = viewModel::togglePin
     )
 }
 
@@ -42,6 +44,7 @@ fun NotesContent(
     notes: List<Note>,                  // CHANGED: sebelumnya List<NoteEntity>
     onAdd: (String, String) -> Unit,
     onDelete: (Note) -> Unit,           // CHANGED: sebelumnya (NoteEntity) -> Unit
+    onTogglePin: (Note) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var title by rememberSaveable { mutableStateOf("") }
@@ -80,11 +83,24 @@ fun NotesContent(
             LazyColumn {
                 items(notes, key = { it.id }) { note ->
                     ListItem(
-                        headlineContent = { Text(note.title) },
+//                        headlineContent = { Text(note.title) },
                         supportingContent = { Text(note.content) },
+//                        trailingContent = {
+//                            TextButton(onClick = { onDelete(note) }) { Text("Delete") }
+//                        }
+                        // trailingContent pada ListItem:
                         trailingContent = {
-                            TextButton(onClick = { onDelete(note) }) { Text("Delete") }
-                        }
+                            Row {
+                                TextButton(onClick = { onTogglePin(note) }) {
+                                    Text(if (note.isPinned) "Unpin" else "Pin")
+                                }
+                                TextButton(onClick = { onDelete(note) }) { Text("Delete") }
+                            }
+                        },
+                        headlineContent = {
+                            Text(if (note.isPinned) "📌 ${note.title}" else note.title)
+                        },
+
                     )
                 }
             }

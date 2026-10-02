@@ -23,4 +23,9 @@ class NoteRepositoryImpl @Inject constructor(
     override suspend fun deleteNote(note: Note) {
         dao.delete(note.toEntity())
     }
+
+    override suspend fun togglePin(note: Note) {
+        dao.setPinned(note.id, !note.isPinned)
+    }
+
 }

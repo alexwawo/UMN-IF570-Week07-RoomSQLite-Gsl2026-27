@@ -38,4 +38,9 @@ class NotesViewModel @Inject constructor(
     fun deleteNote(note: Note) {
         viewModelScope.launch { repository.deleteNote(note) }
     }
+
+    fun togglePin(note: Note) {
+        viewModelScope.launch { repository.togglePin(note) }
+    }
+
 }

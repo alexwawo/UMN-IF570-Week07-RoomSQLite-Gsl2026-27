@@ -16,6 +16,9 @@ interface NoteDao {
     suspend fun delete(note: NoteEntity)
 
     // BUKAN suspend: Flow dari Room bersifat reaktif, query dijalankan di background
-    @Query("SELECT * FROM notes ORDER BY createdAt DESC")
+    @Query("SELECT * FROM notes ORDER BY isPinned DESC, createdAt DESC")
     fun observeAll(): Flow<List<NoteEntity>>
+
+    @Query("UPDATE notes SET isPinned = :pinned WHERE id = :id")
+    suspend fun setPinned(id: Int, pinned: Boolean)
 }

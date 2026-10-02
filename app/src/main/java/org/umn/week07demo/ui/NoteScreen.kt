@@ -22,10 +22,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import org.umn.week07demo.di.AppViewModelProvider
 import org.umn.week07demo.model.Note
 
 @Composable
-fun NotesScreen(viewModel: NotesViewModel = viewModel()) {
+fun NotesScreen(
+    viewModel: NotesViewModel = viewModel(factory = AppViewModelProvider.Factory)
+) {
     val notes by viewModel.notes.collectAsStateWithLifecycle()
 
     NotesContent(

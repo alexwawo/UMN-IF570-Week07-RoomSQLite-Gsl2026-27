@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -16,12 +17,9 @@ import org.umn.week07demo.data.repository.NoteRepository
 import org.umn.week07demo.data.repository.NoteRepositoryImpl
 import org.umn.week07demo.model.Note
 
-class NotesViewModel(application: Application) : AndroidViewModel(application) {
-    constructor(application: NoteRepository) : this(application)
-
-    // Masih membuat dependency sendiri (belum DI), tapi logika hanya bicara ke interface
-    private val repository: NoteRepository =
-        NoteRepositoryImpl(AppDatabase.getInstance(application).noteDao())
+class NotesViewModel(
+    private val repository: NoteRepository
+) : ViewModel() {
 
     val notes: StateFlow<List<Note>> = repository.observeNotes()
         .stateIn(

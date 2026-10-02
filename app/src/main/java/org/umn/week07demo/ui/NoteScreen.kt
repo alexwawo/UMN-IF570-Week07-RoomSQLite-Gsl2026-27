@@ -20,15 +20,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import org.umn.week07demo.di.AppViewModelProvider
 import org.umn.week07demo.model.Note
 
 @Composable
-fun NotesScreen(
-    viewModel: NotesViewModel = viewModel(factory = AppViewModelProvider.Factory)
-) {
+fun NotesScreen(viewModel: NotesViewModel = hiltViewModel()) {
     val notes by viewModel.notes.collectAsStateWithLifecycle()
 
     NotesContent(

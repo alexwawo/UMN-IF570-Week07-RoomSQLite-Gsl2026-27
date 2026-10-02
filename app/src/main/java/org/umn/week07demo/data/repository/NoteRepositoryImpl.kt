@@ -1,5 +1,6 @@
 package org.umn.week07demo.data.repository
 
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.umn.week07demo.data.local.NoteDao
@@ -8,7 +9,7 @@ import org.umn.week07demo.model.Note
 import org.umn.week07demo.model.toDomain
 import org.umn.week07demo.model.toEntity
 
-class NoteRepositoryImpl(
+class NoteRepositoryImpl @Inject constructor(
     private val dao: NoteDao
 ) : NoteRepository {
 

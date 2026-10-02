@@ -1,0 +1,89 @@
+package org.umn.week07demo.ui
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import org.umn.week07demo.data.local.NoteEntity
+
+@Composable
+fun NotesScreen(viewModel: NotesViewModel = viewModel()) {
+    NotesContent(
+        notes = viewModel.notes,
+        onAdd = viewModel::addNote,
+        onDelete = viewModel::deleteNote
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NotesContent(
+    notes: List<NoteEntity>,
+    onAdd: (String, String) -> Unit,
+    onDelete: (NoteEntity) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var title by rememberSaveable { mutableStateOf("") }
+    var content by rememberSaveable { mutableStateOf("") }
+
+    Scaffold(
+        modifier = modifier,
+        topBar = { TopAppBar(title = { Text("Notes - Week 7") }) }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .padding(16.dp)
+        ) {
+            OutlinedTextField(
+                value = title,
+                onValueChange = { title = it },
+                label = { Text("Title") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            OutlinedTextField(
+                value = content,
+                onValueChange = { content = it },
+                label = { Text("Content") },
+                modifier = Modifier.fillMaxWidth()
+            )
+            Button(
+                onClick = {
+                    onAdd(title, content)
+                    title = ""
+                    content = ""
+                },
+                enabled = title.isNotBlank()
+            ) { Text("Add") }
+
+            LazyColumn {
+                items(notes, key = { it.id }) { note ->
+                    ListItem(
+                        headlineContent = { Text(note.title) },
+                        supportingContent = { Text(note.content) },
+                        trailingContent = {
+                            TextButton(onClick = { onDelete(note) }) { Text("Delete") }
+                        }
+                    )
+                }
+            }
+        }
+    }
+}

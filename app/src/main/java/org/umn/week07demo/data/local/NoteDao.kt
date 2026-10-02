@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {
@@ -14,6 +15,7 @@ interface NoteDao {
     @Delete
     suspend fun delete(note: NoteEntity)
 
+    // BUKAN suspend: Flow dari Room bersifat reaktif, query dijalankan di background
     @Query("SELECT * FROM notes ORDER BY createdAt DESC")
-    suspend fun getAll(): List<NoteEntity>
+    fun observeAll(): Flow<List<NoteEntity>>
 }

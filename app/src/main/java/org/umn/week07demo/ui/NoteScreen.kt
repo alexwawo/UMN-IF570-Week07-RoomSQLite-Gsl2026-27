@@ -20,13 +20,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import org.umn.week07demo.data.local.NoteEntity
 
 @Composable
 fun NotesScreen(viewModel: NotesViewModel = viewModel()) {
+    val notes by viewModel.notes.collectAsStateWithLifecycle()
+
     NotesContent(
-        notes = viewModel.notes,
+        notes = notes,
         onAdd = viewModel::addNote,
         onDelete = viewModel::deleteNote
     )

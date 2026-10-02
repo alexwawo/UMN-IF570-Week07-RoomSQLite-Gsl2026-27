@@ -22,7 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import org.umn.week07demo.data.local.NoteEntity
+import org.umn.week07demo.model.Note
 
 @Composable
 fun NotesScreen(viewModel: NotesViewModel = viewModel()) {
@@ -38,9 +38,9 @@ fun NotesScreen(viewModel: NotesViewModel = viewModel()) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotesContent(
-    notes: List<NoteEntity>,
+    notes: List<Note>,                  // CHANGED: sebelumnya List<NoteEntity>
     onAdd: (String, String) -> Unit,
-    onDelete: (NoteEntity) -> Unit,
+    onDelete: (Note) -> Unit,           // CHANGED: sebelumnya (NoteEntity) -> Unit
     modifier: Modifier = Modifier
 ) {
     var title by rememberSaveable { mutableStateOf("") }

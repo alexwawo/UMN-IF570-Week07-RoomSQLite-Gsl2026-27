@@ -12,12 +12,17 @@ import kotlinx.coroutines.flow.stateIn
 import org.umn.week07demo.data.local.AppDatabase
 import org.umn.week07demo.data.local.NoteEntity
 import kotlinx.coroutines.launch
+import org.umn.week07demo.data.repository.NoteRepository
+import org.umn.week07demo.data.repository.NoteRepositoryImpl
+import org.umn.week07demo.model.Note
 
 class NotesViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val dao = AppDatabase.getInstance(application).noteDao()
+    // Masih membuat dependency sendiri (belum DI), tapi logika hanya bicara ke interface
+    private val repository: NoteRepository =
+        NoteRepositoryImpl(AppDatabase.getInstance(application).noteDao())
 
-    val notes: StateFlow<List<NoteEntity>> = dao.observeAll()
+    val notes: StateFlow<List<Note>> = repository.observeNotes()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
@@ -25,14 +30,10 @@ class NotesViewModel(application: Application) : AndroidViewModel(application) {
         )
 
     fun addNote(title: String, content: String) {
-        viewModelScope.launch {
-            dao.insert(NoteEntity(title = title, content = content))
-        }
+        viewModelScope.launch { repository.addNote(title, content) }
     }
 
-    fun deleteNote(note: NoteEntity) {
-        viewModelScope.launch {
-            dao.delete(note)
-        }
+    fun deleteNote(note: Note) {
+        viewModelScope.launch { repository.deleteNote(note) }
     }
 }

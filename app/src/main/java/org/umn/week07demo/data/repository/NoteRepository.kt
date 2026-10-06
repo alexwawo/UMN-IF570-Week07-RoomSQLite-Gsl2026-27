@@ -7,4 +7,5 @@ interface NoteRepository {
     fun observeNotes(): Flow<List<Note>>
     suspend fun addNote(title: String, content: String)
     suspend fun deleteNote(note: Note)
+    suspend fun togglePin(note: Note)
 }

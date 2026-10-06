@@ -17,10 +17,16 @@ class NoteRepositoryImpl @Inject constructor(
         dao.observeAll().map { list -> list.map { it.toDomain() } }
 
     override suspend fun addNote(title: String, content: String) {
-        dao.insert(NoteEntity(title = title, content = content))
+        val now = System.currentTimeMillis()
+        dao.insert(NoteEntity(title = title, content = content, createdAt = now, updatedAt = now))
     }
 
     override suspend fun deleteNote(note: Note) {
         dao.delete(note.toEntity())
     }
+
+    override suspend fun togglePin(note: Note) {
+        dao.setPinned(note.id, !note.isPinned)
+    }
+
 }

@@ -21,7 +21,6 @@ Repository demo untuk **Week 7 (Room & SQLite)**. Proyek: **NotesApp**, aplikasi
 11. [Tutorial 5 — Migrasi Database](#tutorial-5--migrasi-database)
 12. [Tutorial 6 — Testing](#tutorial-6--testing)
 13. [Troubleshooting](#troubleshooting)
-14. [Tugas Mandiri](#tugas-mandiri)
 
 ---
 
@@ -1179,17 +1178,3 @@ Jalankan dengan klik ▶ di class, atau `./gradlew testDebugUnitTest`.
 | `[Hilt] Missing @HiltAndroidApp` | Manifest tidak memakai `NotesApplication` | Cek `android:name=".NotesApplication"` |
 | Crash saat pindah tag ke versi DB lebih rendah | Room tidak mendukung downgrade | `adb uninstall com.example.notesapp` |
 
----
-
-## Tugas Mandiri
-
-Kerjakan di branch Anda sendiri, mulai dari `demo-6c-viewmodel-test` (atau hasil akhir Anda).
-
-1. **Fitur edit catatan.** Tambahkan `@Update` pada DAO dan perbarui `updatedAt` setiap catatan diedit. Pertimbangkan apakah ini memerlukan migrasi.
-2. **Migrasi baru (v3 → v4).** Tambahkan kolom `category` dengan nilai default `"General"`. Pilih AutoMigration atau Migration manual dan **jelaskan alasan pilihan Anda** (C5).
-3. **Tulis test untuk fitur Anda:** minimal satu DAO test, satu migration test, dan satu ViewModel test.
-4. **Refleksi singkat (maks. 1 halaman):** jelaskan keputusan arsitektur Anda (mengapa Repository, mengapa Flow, mengapa migrasi manual/otomatis) dan risikonya terhadap data pengguna.
-
----
-
-*IF570 Mobile Application Programming — Week 7. Ganti `<username>` pada tautan dengan akun GitHub pemilik repository.*
